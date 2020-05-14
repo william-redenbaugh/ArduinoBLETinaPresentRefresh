@@ -202,11 +202,11 @@ void animation_thread_func(void){
 }
 
 void loop() {
- if (APDS.gestureAvailable()) {
-    // a gesture was detected, read and print to serial monitor
-   gesture = APDS.readGesture();
-   animation = true; 
- }
+  if (APDS.gestureAvailable()) {
+      // a gesture was detected, read and print to serial monitor
+    gesture = APDS.readGesture();
+    animation = true; 
+  }
 
- rtos::Thread::wait(100);
+  rtos::Thread::wait(100);
 }
