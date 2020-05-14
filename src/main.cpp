@@ -13,6 +13,7 @@
 #include "PDM.h"
 #include "Arduino_APDS9960.h"
 #include "rtos.h"
+
 // If you're using the wing version
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731_Wing();
 rtos::Thread animation_thread; 

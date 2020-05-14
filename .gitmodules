@@ -1,0 +1,21 @@
+[submodule "lib/Adafruit-GFX-Library"]
+	path = lib/Adafruit-GFX-Library
+	url = git@github.com:william-redenbaugh/Adafruit-GFX-Library.git
+[submodule "lib/Adafruit_IS31FL3731"]
+	path = lib/Adafruit_IS31FL3731
+	url = git@github.com:william-redenbaugh/Adafruit_IS31FL3731.git
+[submodule "lib/Adafruit_APDS9960"]
+	path = lib/Adafruit_APDS9960
+	url = git@github.com:adafruit/Adafruit_APDS9960.git
+[submodule "lib/Arduino_HTS221"]
+	path = lib/Arduino_HTS221
+	url = git@github.com:arduino-libraries/Arduino_HTS221.git
+[submodule "lib/Arduino_LPS22HB"]
+	path = lib/Arduino_LPS22HB
+	url = git@github.com:arduino-libraries/Arduino_LPS22HB.git
+[submodule "lib/Arduino_LSM9DS1"]
+	path = lib/Arduino_LSM9DS1
+	url = git@github.com:arduino-libraries/Arduino_LSM9DS1.git
+[submodule "lib/Arduino_APDS9960"]
+	path = lib/Arduino_APDS9960
+	url = git@github.com:arduino-libraries/Arduino_APDS9960.git
