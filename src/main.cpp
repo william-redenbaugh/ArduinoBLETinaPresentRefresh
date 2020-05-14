@@ -11,22 +11,19 @@
 #include "ble/GattServer.h"
 #include "BluetoothStatus.hpp"
 
-// Driver librarie for all our different hardware peripherals. 
+// Driver libraries for all our different hardware peripherals. 
 #include "Adafruit_IS31FL3731.h"
-#include "LSM9DS1.h"
-#include "BARO.h"
-#include "HTS.h"
-#include "PDM.h"
+#include "Arduino_LSM9DS1.h"
+#include "Arduino_LPS22HB.h"
+#include "Arduino_HTS221.h"
 #include "Arduino_APDS9960.h"
+#include "PDM.h"
+#include "SensorReadThread.hpp"
 
 // If you're using the wing version
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731_Wing();
-rtos::Thread animation_thread; 
 
-volatile int gesture;
-volatile bool animation = false; 
-
-void animation_thread_func(void);
+SensorReadThread sensor_thread_handler;
 
 void setup() {
   // Setup the serial interface. 
@@ -38,40 +35,14 @@ void setup() {
     while(1) 
       delay(1000);
   }
-  
-  // Setting up the promixity and color sensor
-  if (!APDS.begin()) {
-    Serial.println("Error initializing APDS9960 sensor!");
-    while(1)
-      delay(1000);
-  }
 
-  // Setting up the barometrix pressure sensor. 
-  if (!BARO.begin()) {
-    Serial.println("Failed to initialize pressure sensor!");
-    while (1){
-      delay(1000);
-    }
-  }
-
-  // Setting up our 9dof imu!
-  if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
-    while (1);
-  }
-  
-  animation_thread.start(animation_thread_func);
-  
-  // Setting up bluetooth. 
-  BLE &ble = BLE::Instance();
-
-}
-
-void animation_thread_func(void){
-  rtos::Thread::wait(1000);
+  // Setting up our sensor read handler. 
+  sensor_thread_handler.init_sensors();
+  sensor_thread_handler.set_enable(0);
+  sensor_thread_handler.init_thread();
 }
 
 void loop() {
   // Currenting doing nothing, other than waking up every second...
- rtos::Thread::wait(1000);
+ rtos::Thread::wait(osWaitForever);
 }
