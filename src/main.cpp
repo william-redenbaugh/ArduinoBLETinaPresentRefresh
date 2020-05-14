@@ -12,9 +12,15 @@
 #include "HTS.h"
 #include "PDM.h"
 #include "Arduino_APDS9960.h"
-
+#include "rtos.h"
 // If you're using the wing version
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731_Wing();
+rtos::Thread animation_thread; 
+
+volatile int gesture;
+volatile bool animation = false; 
+
+void animation_thread_func(void);
 
 void setup() {
   // Setup the serial interface. 
@@ -47,8 +53,159 @@ void setup() {
     Serial.println("Failed to initialize IMU!");
     while (1);
   }
+  animation_thread.start(animation_thread_func);
+}
+
+void animation_thread_func(void){
+  while(1){
+  if(animation){
+    switch (gesture) {
+      case GESTURE_UP:
+      {
+        for(uint8_t x = 16; x > 0; x--){
+          matrix.displayFrame(1);
+
+          matrix.setFrame(0);
+          for(uint8_t y = 0; y < 8; y++){
+            matrix.drawPixel(x, y, 50);
+          }
+          matrix.displayFrame(0);
+          matrix.setFrame(1);
+          for(uint8_t y = 0; y < 8; y++){
+            matrix.drawPixel(x, y, 50);
+          }
+          rtos::Thread::wait(10);
+        }
+
+        for(uint8_t x = 16; x > 0; x--){
+          matrix.displayFrame(1);
+
+          matrix.setFrame(0);
+          for(uint8_t y = 0; y < 8; y++){
+            matrix.drawPixel(x, y, 0);
+          }
+          matrix.displayFrame(0);
+          matrix.setFrame(1);
+          for(uint8_t y = 0; y < 8; y++){
+            matrix.drawPixel(x, y, 0);
+          }
+          rtos::Thread::wait(10);
+        }
+      }
+        break;
+
+      case GESTURE_DOWN:
+        for(uint8_t x = 0; x < 16; x++){
+          matrix.displayFrame(1);
+
+          matrix.setFrame(0);
+          for(uint8_t y = 0; y < 8; y++){
+            matrix.drawPixel(x, y, 50);
+          }
+          matrix.displayFrame(0);
+          matrix.setFrame(1);
+          for(uint8_t y = 0; y < 8; y++){
+            matrix.drawPixel(x, y, 50);
+          }
+          rtos::Thread::wait(10);
+        }
+
+        for(uint8_t x = 0; x < 16; x++){
+          matrix.displayFrame(1);
+
+          matrix.setFrame(0);
+          for(uint8_t y = 0; y < 8; y++){
+            matrix.drawPixel(x, y, 0);
+          }
+          matrix.displayFrame(0);
+          matrix.setFrame(1);
+          for(uint8_t y = 0; y < 8; y++){
+            matrix.drawPixel(x, y, 0);
+          }
+          rtos::Thread::wait(10);
+        }
+        break;
+
+      case GESTURE_LEFT:
+        for(uint8_t y = 0; y < 8; y++){
+          matrix.displayFrame(1);
+
+          matrix.setFrame(0);
+          for(uint8_t x = 0; x < 16; x++){
+            matrix.drawPixel(x, y, 50);
+          }
+          matrix.displayFrame(0);
+          matrix.setFrame(1);
+          for(uint8_t x = 0; x < 16; x++){
+            matrix.drawPixel(x, y, 50);
+          }
+          rtos::Thread::wait(20);
+        }
+
+        for(uint8_t y = 0; y < 8; y++){
+          matrix.displayFrame(1);
+
+          matrix.setFrame(0);
+          for(uint8_t x = 0; x < 16; x++){
+            matrix.drawPixel(x, y, 0);
+          }
+          matrix.displayFrame(0);
+          matrix.setFrame(1);
+          for(uint8_t x = 0; x < 16; x++){
+            matrix.drawPixel(x, y, 0);
+          }
+          rtos::Thread::wait(20);
+        }
+        break;
+
+      case GESTURE_RIGHT:
+        for(uint8_t y = 8; y > 0; y--){
+          matrix.displayFrame(1);
+
+          matrix.setFrame(0);
+          for(uint8_t x = 0; x < 16; x++){
+            matrix.drawPixel(x, y, 50);
+          }
+          matrix.displayFrame(0);
+          matrix.setFrame(1);
+          for(uint8_t x = 0; x < 16; x++){
+            matrix.drawPixel(x, y, 50);
+          }
+          rtos::Thread::wait(20);
+        }
+
+        for(uint8_t y = 8; y > 0; y--){
+          matrix.displayFrame(1);
+
+          matrix.setFrame(0);
+          for(uint8_t x = 0; x < 16; x++){
+            matrix.drawPixel(x, y, 0);
+          }
+          matrix.displayFrame(0);
+          matrix.setFrame(1);
+          for(uint8_t x = 0; x < 16; x++){
+            matrix.drawPixel(x, y, 0);
+          }
+          rtos::Thread::wait(20);
+        }
+        break;
+
+      default:
+        // ignore
+        break;
+    }
+    animation = false; 
+  }
+  rtos::Thread::wait(100);
+  }
 }
 
 void loop() {
-  wait(1);
+ if (APDS.gestureAvailable()) {
+    // a gesture was detected, read and print to serial monitor
+   gesture = APDS.readGesture();
+   animation = true; 
+ }
+
+ rtos::Thread::wait(100);
 }
