@@ -241,6 +241,11 @@ void AniMatrix::MatrixAnimationHandler::_swipe_right(void){
   }  
 }
 
-
-
-
+/**************************************************************************/
+/*!
+    @brief show text information internal function call. 
+*/
+/**************************************************************************/
+void AniMatrix::MatrixAnimationHandler::_show_text(void){
+  
+}

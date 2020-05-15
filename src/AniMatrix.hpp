@@ -43,7 +43,8 @@ class MatrixAnimationHandler{
         void _swipe_up(void);
         void _swipe_left(void);
         void _swipe_right(void);
-
+        void _show_text(void);
+        
         // Pointer to the matrix driver. 
         Adafruit_IS31FL3731 *matrix_ptr;
 
