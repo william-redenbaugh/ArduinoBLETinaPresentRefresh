@@ -38,7 +38,7 @@ void setup() {
 
   // Setting up our sensor read handler. 
   sensor_thread_handler.init_sensors();
-  sensor_thread_handler.set_enable(0);
+  sensor_thread_handler.set_enable(sense_read::ENAB_MIC | sense_read::ENAB_HTEMP);
   sensor_thread_handler.init_thread();
 }
 
