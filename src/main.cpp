@@ -13,6 +13,8 @@
 
 // Driver librarie for all our different hardware peripherals. 
 #include "Adafruit_IS31FL3731.h"
+#include "AniMatrix.hpp"
+
 #include "LSM9DS1.h"
 #include "BARO.h"
 #include "HTS.h"
@@ -21,12 +23,6 @@
 
 // If you're using the wing version
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731_Wing();
-rtos::Thread animation_thread; 
-
-volatile int gesture;
-volatile bool animation = false; 
-
-void animation_thread_func(void);
 
 void setup() {
   // Setup the serial interface. 
@@ -38,37 +34,7 @@ void setup() {
     while(1) 
       delay(1000);
   }
-  
-  // Setting up the promixity and color sensor
-  if (!APDS.begin()) {
-    Serial.println("Error initializing APDS9960 sensor!");
-    while(1)
-      delay(1000);
-  }
 
-  // Setting up the barometrix pressure sensor. 
-  if (!BARO.begin()) {
-    Serial.println("Failed to initialize pressure sensor!");
-    while (1){
-      delay(1000);
-    }
-  }
-
-  // Setting up our 9dof imu!
-  if (!IMU.begin()) {
-    Serial.println("Failed to initialize IMU!");
-    while (1);
-  }
-  
-  animation_thread.start(animation_thread_func);
-  
-  // Setting up bluetooth. 
-  BLE &ble = BLE::Instance();
-
-}
-
-void animation_thread_func(void){
-  rtos::Thread::wait(1000);
 }
 
 void loop() {
