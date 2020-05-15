@@ -21,6 +21,7 @@ enum Animation{
 };
 
 const uint32_t animation_flag = 0x1;
+const uint32_t animation_complete_flag = 0x2;
 
 /**************************************************************************/
 /*!
@@ -32,6 +33,7 @@ class MatrixAnimationHandler{
         void begin(Adafruit_IS31FL3731 *matrix_ptr);
         
         bool set_next_animation(uint16_t next_ani);
+        bool wait_animation_end(void);
 
         void _run(void);
     private: 

@@ -41,13 +41,16 @@ void setup() {
 
 void loop() {
   // Currenting doing nothing, other than waking up every second...
-  rtos::Thread::wait(1000);
   matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_DOWN);
-  // Currenting doing nothing, other than waking up every second...
   rtos::Thread::wait(1000);
+  // Currenting doing nothing, other than waking up every second...
   matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_UP);
-  // Currenting doing nothing, other than waking up every second...
   rtos::Thread::wait(1000);
+  // Currenting doing nothing, other than waking up every second...
   matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_LEFT);
+  rtos::Thread::wait(1000);
 
+  // Currenting doing nothing, other than waking up every second...
+  matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_RIGHT);
+  rtos::Thread::wait(1000);
 }
