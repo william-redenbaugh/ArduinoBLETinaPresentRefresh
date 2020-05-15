@@ -15,6 +15,8 @@
 #include "Arduino_APDS9960.h"
 #include "PDM.h"
 
+namespace sense_read{
+    
 /**************************************************************************/
 /*!
     @brief Bitmask for easy enabling and disabling of our sensor
@@ -26,6 +28,30 @@ enum SensorEnableBitmask{
     ENAB_IMU = 0b00000100,
     ENAB_HTEMP = 0b00001000, 
     ENAB_PROX = 0b00010000
+};
+
+struct AccelData{
+    float x, y, z; 
+};
+
+struct GyroData{
+   float x, y, z;  
+};
+
+struct MagData{
+    float x, y, z;
+};
+
+struct ColorData{
+    int r, g, b;
+};
+
+struct GestureProxData{
+    int gesture, proximity; 
+};
+
+struct TempHumData{
+    float tempurature, humidity;
 };
 
 /**************************************************************************/
@@ -46,6 +72,7 @@ class SensorReadThread{
         void set_thread_period_val(void);
 
         void _internal_thread_func(void);
+    
     private: 
         // Private functions that aid in helping us read/filter data. 
         void read_pressure_sensor(void);
@@ -53,6 +80,7 @@ class SensorReadThread{
         void read_imu(void);
         void read_prox_color(void);
         void read_temp_humd(void);
+
         // Thread handler that we use to start and end our reading thread
         rtos::Thread thread_handler; 
 
@@ -64,6 +92,20 @@ class SensorReadThread{
         // pressure data from our barometric pressure sensor. 
         float barometric_pressure = 0.0;
 
+        // IMU data. 
+        AccelData accel_data; 
+        GyroData gyro_data; 
+        MagData mag_data; 
+
+        // Color data
+        ColorData color_data; 
+        // Gesture and proximity data
+        GestureProxData gesture_prox_data; 
+
+        // Tempurature and humidity data
+        TempHumData temp_hum_data;  
 };
+
+}
 
 #endif

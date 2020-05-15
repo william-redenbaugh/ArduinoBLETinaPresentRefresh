@@ -23,7 +23,7 @@
 // If you're using the wing version
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731_Wing();
 
-SensorReadThread sensor_thread_handler;
+sense_read::SensorReadThread sensor_thread_handler;
 
 void setup() {
   // Setup the serial interface. 
