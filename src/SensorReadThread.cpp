@@ -163,3 +163,107 @@ void sense_read::SensorReadThread::read_temp_humd(void){
     this->temp_hum_data.tempurature = HTS.readTemperature();
     this->temp_hum_data.humidity = HTS.readHumidity();
 }
+
+/**************************************************************************/
+/*!
+    @brief get that accelerometer data
+*/
+/**************************************************************************/
+sense_read::AccelData sense_read::SensorReadThread:: get_accel_data(void){
+    if(!mutex_taken){
+        sense_read::AccelData ac_dat;
+        return ac_dat;
+    }
+
+    return this->accel_data;
+}
+
+/**************************************************************************/
+/*!
+    @brief get that gyroscope data
+*/
+/**************************************************************************/
+sense_read::GyroData sense_read::SensorReadThread::get_gyro_data(void){
+    if(!mutex_taken){
+        sense_read::GyroData gyr_dat; 
+        return gyr_dat; 
+    }
+        
+    return this->gyro_data;
+}
+
+/**************************************************************************/
+/*!
+    @brief get that magnetometer data
+*/
+/**************************************************************************/
+sense_read::MagData sense_read::SensorReadThread::get_mag_data(void){
+    if(!mutex_taken){
+        sense_read::MagData ma_dat; 
+        return ma_dat; 
+    }
+
+    return this->mag_data;
+}
+
+/**************************************************************************/
+/*!
+    @brief get that color data
+*/
+/**************************************************************************/
+sense_read::ColorData sense_read::SensorReadThread::get_color_data(void){
+    if(!mutex_taken){
+        sense_read::ColorData col_dat;
+        return col_dat;
+    }
+        
+    return this->color_data;
+}
+
+/**************************************************************************/
+/*!
+    @brief get that gesture data
+*/
+/**************************************************************************/
+sense_read::GestureProxData sense_read::SensorReadThread::get_gesture_prox_data(void){
+    if(!mutex_taken){
+        sense_read::GestureProxData ges_dat;
+        return ges_dat;
+    }
+        
+    return this->gesture_prox_data;
+}
+
+/**************************************************************************/
+/*!
+    @brief get that tempurature and humidity data. 
+*/
+/**************************************************************************/
+sense_read::TempHumData sense_read::SensorReadThread::get_temp_hum_data(void){
+    if(!mutex_taken){
+        sense_read::TempHumData te_hd;
+        return te_hd;
+    }
+
+    return this->temp_hum_data;
+}
+
+/**************************************************************************/
+/*!
+    @brief Call this when you need to get the data from the thread. It pauses the thread so you can have access to everything
+*/
+/**************************************************************************/
+void sense_read::SensorReadThread::acquire(void){
+    this->resource_mutx.lock();
+    this->mutex_taken = true; 
+}
+
+/**************************************************************************/
+/*!
+    @brief Call this when you are doing getting data from the thread, it resumes the thread to continue getting data. 
+*/
+/**************************************************************************/
+void sense_read::SensorReadThread::release(void){
+    this->resource_mutx.unlock();
+    this->mutex_taken = false; 
+}
