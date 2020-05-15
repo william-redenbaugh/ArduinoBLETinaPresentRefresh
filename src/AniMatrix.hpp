@@ -12,6 +12,16 @@
 
 namespace AniMatrix{
 
+enum Animation{
+    NONE = 0, 
+    SWIPE_LEFT = 1, 
+    SWIPE_RIGHT = 2, 
+    SWIPE_UP = 3,
+    SWIPE_DOWN = 4
+};
+
+const uint32_t animation_flag = 0x1;
+
 /**************************************************************************/
 /*!
     @brief Animation Handler that should make dealing with matrix animations easier and reliant on the rtos. 
@@ -20,9 +30,21 @@ namespace AniMatrix{
 class MatrixAnimationHandler{
     public: 
         void begin(Adafruit_IS31FL3731 *matrix_ptr);
-    private: 
+        
+        bool set_next_animation(uint16_t next_ani);
 
+        void _run(void);
+    private: 
+        // Pointer to the matrix driver. 
         Adafruit_IS31FL3731 *matrix_ptr;
+
+        // Thread handler
+        rtos::Thread animation_thread; 
+
+        // We grab onto this mutex everytime an animation happens. 
+        rtos::Mutex animation_mutex;
+        volatile uint16_t next_animation; 
+        volatile bool animation_complete = true; 
 };
 
 }

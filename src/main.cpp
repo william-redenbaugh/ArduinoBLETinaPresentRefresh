@@ -23,6 +23,7 @@
 
 // If you're using the wing version
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731_Wing();
+AniMatrix::MatrixAnimationHandler matrix_animation_handler; 
 
 void setup() {
   // Setup the serial interface. 
@@ -34,10 +35,19 @@ void setup() {
     while(1) 
       delay(1000);
   }
+  matrix_animation_handler.begin(&matrix);
 
 }
 
 void loop() {
   // Currenting doing nothing, other than waking up every second...
- rtos::Thread::wait(1000);
+  rtos::Thread::wait(1000);
+  matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_DOWN);
+  // Currenting doing nothing, other than waking up every second...
+  rtos::Thread::wait(1000);
+  matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_UP);
+  // Currenting doing nothing, other than waking up every second...
+  rtos::Thread::wait(1000);
+  matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_LEFT);
+
 }
