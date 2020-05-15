@@ -33,7 +33,7 @@ void setup() {
   if(!matrix.begin()){
     Serial.println("CharliePlex Matrix not found");
     while(1) 
-      delay(1000);
+      rtos::ThisThread::sleep_for(1000);
   }
 
   // Setting up our sensor read handler. 
@@ -44,5 +44,5 @@ void setup() {
 
 void loop() {
   // Currenting doing nothing, other than waking up every second...
- rtos::Thread::wait(osWaitForever);
+  rtos::ThisThread::sleep_for(osWaitForever);
 }

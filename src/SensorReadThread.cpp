@@ -17,34 +17,34 @@ void sense_read::SensorReadThread::init_sensors(void){
     if (!APDS.begin()) {
         Serial.println("Error initializing APDS9960 sensor!");
         while(1)
-            rtos::Thread::wait(1000);
+            rtos::ThisThread::sleep_for(1000);
     }
 
     // Setting up the barometrix pressure sensor. 
     if (!BARO.begin()) {
         Serial.println("Failed to initialize pressure sensor!");
         while (1)
-            rtos::Thread::wait(1000);
+            rtos::ThisThread::sleep_for(1000);
     }
  
     // Setting up our 9dof imu!
     if (!IMU.begin()) {
         Serial.println("Failed to initialize IMU!");
         while (1)
-            rtos::Thread::wait(1000);
+            rtos::ThisThread::sleep_for(1000);
     }
 
     // Setting up our tempurature and humidity sensor.
     if(!HTS.begin()){
         Serial.println("Failed to initialize our Tempurature and Humidity Sensor");
         while(1)
-            rtos::Thread::wait(1000);
+            rtos::ThisThread::sleep_for(1000);
     }
 
     if(!PDM.begin(1, 16000)){
         Serial.println("Failed to start PDM :(");
         while(1)
-            rtos::Thread::wait(1000);
+            rtos::ThisThread::sleep_for(1000);
     }
 }
 
@@ -106,7 +106,7 @@ void sense_read::SensorReadThread::_internal_thread_func(void){
     if(this->enable_bitmask & (ENAB_PROX))
         this->read_prox_color();
 
-    rtos::Thread::wait(this->delay_ms);
+    rtos::ThisThread::sleep_for(this->delay_ms);
 }
 
 /**************************************************************************/
