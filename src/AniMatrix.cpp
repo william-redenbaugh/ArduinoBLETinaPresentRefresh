@@ -28,131 +28,19 @@ void AniMatrix::MatrixAnimationHandler::_run(void){
 
     switch(this->next_animation){
         case(AniMatrix::SWIPE_UP):
-        for(uint8_t x = 16; x > 0; x--){
-          this->matrix_ptr->displayFrame(1);
-
-          this->matrix_ptr->setFrame(0);
-          for(uint8_t y = 0; y < 8; y++){
-            this->matrix_ptr->drawPixel(x, y, 50);
-          }
-          this->matrix_ptr->displayFrame(0);
-          this->matrix_ptr->setFrame(1);
-          for(uint8_t y = 0; y < 8; y++){
-            this->matrix_ptr->drawPixel(x, y, 50);
-          }
-          rtos::Thread::wait(10);
-        }
-
-        for(uint8_t x = 16; x > 0; x--){
-          this->matrix_ptr->displayFrame(1);
-
-          this->matrix_ptr->setFrame(0);
-          for(uint8_t y = 0; y < 8; y++){
-            this->matrix_ptr->drawPixel(x, y, 0);
-          }
-          this->matrix_ptr->displayFrame(0);
-          this->matrix_ptr->setFrame(1);
-          for(uint8_t y = 0; y < 8; y++){
-            this->matrix_ptr->drawPixel(x, y, 0);
-          }
-          rtos::Thread::wait(10);
-        }
+          this->_swipe_up();
         break;
 
         case(AniMatrix::SWIPE_DOWN):
-        for(uint8_t x = 0; x < 16; x++){
-          this->matrix_ptr->displayFrame(1);
-
-          this->matrix_ptr->setFrame(0);
-          for(uint8_t y = 0; y < 8; y++){
-            this->matrix_ptr->drawPixel(x, y, 50);
-          }
-          this->matrix_ptr->displayFrame(0);
-          this->matrix_ptr->setFrame(1);
-          for(uint8_t y = 0; y < 8; y++){
-            this->matrix_ptr->drawPixel(x, y, 50);
-          }
-          rtos::Thread::wait(10);
-        }
-
-        for(uint8_t x = 0; x < 16; x++){
-          this->matrix_ptr->displayFrame(1);
-
-          this->matrix_ptr->setFrame(0);
-          for(uint8_t y = 0; y < 8; y++){
-            this->matrix_ptr->drawPixel(x, y, 0);
-          }
-          this->matrix_ptr->displayFrame(0);
-          this->matrix_ptr->setFrame(1);
-          for(uint8_t y = 0; y < 8; y++){
-            this->matrix_ptr->drawPixel(x, y, 0);
-          }
-          rtos::Thread::wait(10);
-        }
+        this->_swipe_down();
         break;
 
         case(AniMatrix::SWIPE_LEFT):
-        for(uint8_t y = 0; y < 8; y++){
-          this->matrix_ptr->displayFrame(1);
-
-          this->matrix_ptr->setFrame(0);
-          for(uint8_t x = 0; x < 16; x++){
-            this->matrix_ptr->drawPixel(x, y, 50);
-          }
-          this->matrix_ptr->displayFrame(0);
-          this->matrix_ptr->setFrame(1);
-          for(uint8_t x = 0; x < 16; x++){
-            this->matrix_ptr->drawPixel(x, y, 50);
-          }
-          rtos::Thread::wait(20);
-        }
-
-        for(uint8_t y = 0; y < 8; y++){
-          this->matrix_ptr->displayFrame(1);
-
-          this->matrix_ptr->setFrame(0);
-          for(uint8_t x = 0; x < 16; x++){
-            this->matrix_ptr->drawPixel(x, y, 0);
-          }
-          this->matrix_ptr->displayFrame(0);
-          this->matrix_ptr->setFrame(1);
-          for(uint8_t x = 0; x < 16; x++){
-            this->matrix_ptr->drawPixel(x, y, 0);
-          }
-          rtos::Thread::wait(20);
-        }
+        this->_swipe_left();
         break;
 
         case(AniMatrix::SWIPE_RIGHT):
-        for(uint8_t y = 8; y > 0; y--){
-          this->matrix_ptr->displayFrame(1);
-
-          this->matrix_ptr->setFrame(0);
-          for(uint8_t x = 0; x < 16; x++){
-            this->matrix_ptr->drawPixel(x, y, 50);
-          }
-          this->matrix_ptr->displayFrame(0);
-          this->matrix_ptr->setFrame(1);
-          for(uint8_t x = 0; x < 16; x++){
-            this->matrix_ptr->drawPixel(x, y, 50);
-          }
-          rtos::Thread::wait(20);
-        }
-
-        for(uint8_t y = 8; y > 0; y--){
-          this->matrix_ptr->displayFrame(1);
-
-          this->matrix_ptr->setFrame(0);
-          for(uint8_t x = 0; x < 16; x++){
-            this->matrix_ptr->drawPixel(x, y, 0);
-          }
-          this->matrix_ptr->displayFrame(0);
-          this->matrix_ptr->setFrame(1);
-          for(uint8_t x = 0; x < 16; x++){
-            this->matrix_ptr->drawPixel(x, y, 0);
-          }
-          rtos::Thread::wait(20);
-        }        
+        this->_swipe_right();    
         break;
 
         // Don't get here please. 
@@ -189,3 +77,170 @@ bool AniMatrix::MatrixAnimationHandler::set_next_animation(uint16_t next_ani){
 bool AniMatrix::MatrixAnimationHandler::wait_animation_end(void){
     this->animation_thread.signal_wait(AniMatrix::animation_complete_flag);
 }
+
+/**************************************************************************/
+/*!
+    @brief  swipe down animation internal function call
+*/
+/**************************************************************************/
+void AniMatrix::MatrixAnimationHandler::_swipe_down(void){
+  for(uint8_t x = 0; x < 16; x++){
+    
+    this->matrix_ptr->displayFrame(1);
+    this->matrix_ptr->setFrame(0);
+
+    for(uint8_t y = 0; y < 8; y++)
+      this->matrix_ptr->drawPixel(x, y, 50);
+    
+    this->matrix_ptr->displayFrame(0);
+    this->matrix_ptr->setFrame(1);
+    
+    for(uint8_t y = 0; y < 8; y++)
+      this->matrix_ptr->drawPixel(x, y, 50);
+
+    if(this->interrupt_animation)
+      return; 
+
+    rtos::ThisThread::sleep_for(10);
+  }
+
+  for(uint8_t x = 0; x < 16; x++){
+    this->matrix_ptr->displayFrame(1);
+    this->matrix_ptr->setFrame(0);
+    
+    for(uint8_t y = 0; y < 8; y++)
+      this->matrix_ptr->drawPixel(x, y, 0);
+    
+    this->matrix_ptr->displayFrame(0);
+    this->matrix_ptr->setFrame(1);
+    
+    for(uint8_t y = 0; y < 8; y++)
+      this->matrix_ptr->drawPixel(x, y, 0);
+    
+    if(this->interrupt_animation)
+      return; 
+    
+    rtos::ThisThread::sleep_for(10);
+  }
+}
+
+/**************************************************************************/
+/*!
+    @brief  swipe up animation internal function call
+*/
+/**************************************************************************/
+void AniMatrix::MatrixAnimationHandler::_swipe_up(void){
+  for(uint8_t x = 16; x > 0; x--){
+    this->matrix_ptr->displayFrame(1);
+    this->matrix_ptr->setFrame(0);
+    
+    for(uint8_t y = 0; y < 8; y++){
+      this->matrix_ptr->drawPixel(x, y, 50);
+    }
+    
+    this->matrix_ptr->displayFrame(0);
+    this->matrix_ptr->setFrame(1);
+
+    for(uint8_t y = 0; y < 8; y++)
+      this->matrix_ptr->drawPixel(x, y, 50);
+    rtos::ThisThread::sleep_for(10);
+  }
+
+  for(uint8_t x = 16; x > 0; x--){
+    this->matrix_ptr->displayFrame(1);
+    this->matrix_ptr->setFrame(0);
+
+    for(uint8_t y = 0; y < 8; y++)
+      this->matrix_ptr->drawPixel(x, y, 0);
+
+    this->matrix_ptr->displayFrame(0);
+    this->matrix_ptr->setFrame(1);
+    
+    for(uint8_t y = 0; y < 8; y++)
+      this->matrix_ptr->drawPixel(x, y, 0);
+
+    rtos::ThisThread::sleep_for(10);
+  }
+}
+
+/**************************************************************************/
+/*!
+    @brief  swipe left animation internal function call
+*/
+/**************************************************************************/
+void AniMatrix::MatrixAnimationHandler::_swipe_left(void){
+  for(uint8_t y = 0; y < 8; y++){
+    this->matrix_ptr->displayFrame(1);
+    this->matrix_ptr->setFrame(0);
+
+    for(uint8_t x = 0; x < 16; x++)
+      this->matrix_ptr->drawPixel(x, y, 50);
+    
+    this->matrix_ptr->displayFrame(0);
+    this->matrix_ptr->setFrame(1);
+
+    for(uint8_t x = 0; x < 16; x++)
+      this->matrix_ptr->drawPixel(x, y, 50);
+    
+    rtos::ThisThread::sleep_for(10);
+  }
+
+  for(uint8_t y = 0; y < 8; y++){
+    this->matrix_ptr->displayFrame(1);
+    this->matrix_ptr->setFrame(0);
+
+    for(uint8_t x = 0; x < 16; x++)
+      this->matrix_ptr->drawPixel(x, y, 0);
+    
+    this->matrix_ptr->displayFrame(0);
+    this->matrix_ptr->setFrame(1);
+    
+    for(uint8_t x = 0; x < 16; x++)
+      this->matrix_ptr->drawPixel(x, y, 0);
+    
+    rtos::ThisThread::sleep_for(10);
+  }
+}
+
+/**************************************************************************/
+/*!
+    @brief  swipe right animation internal function call
+*/
+/**************************************************************************/
+void AniMatrix::MatrixAnimationHandler::_swipe_right(void){
+  for(uint8_t y = 8; y > 0; y--){
+    this->matrix_ptr->displayFrame(1);
+    this->matrix_ptr->setFrame(0);
+
+    for(uint8_t x = 0; x < 16; x++)
+      this->matrix_ptr->drawPixel(x, y, 50);
+    
+    this->matrix_ptr->displayFrame(0);
+    this->matrix_ptr->setFrame(1);
+    
+    for(uint8_t x = 0; x < 16; x++)
+      this->matrix_ptr->drawPixel(x, y, 50);
+    
+    rtos::ThisThread::sleep_for(10);
+  }
+
+  for(uint8_t y = 8; y > 0; y--){
+    this->matrix_ptr->displayFrame(1);
+    this->matrix_ptr->setFrame(0);
+
+    for(uint8_t x = 0; x < 16; x++)
+      this->matrix_ptr->drawPixel(x, y, 0);
+    
+    this->matrix_ptr->displayFrame(0);
+    this->matrix_ptr->setFrame(1);
+
+    for(uint8_t x = 0; x < 16; x++)
+      this->matrix_ptr->drawPixel(x, y, 0);
+    
+    rtos::ThisThread::sleep_for(10);
+  }  
+}
+
+
+
+

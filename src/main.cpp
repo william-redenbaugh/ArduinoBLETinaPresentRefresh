@@ -33,7 +33,7 @@ void setup() {
   if(!matrix.begin()){
     Serial.println("CharliePlex Matrix not found");
     while(1) 
-      delay(1000);
+      rtos::ThisThread::sleep_for(1000);
   }
   matrix_animation_handler.begin(&matrix);
 
@@ -42,15 +42,15 @@ void setup() {
 void loop() {
   // Currenting doing nothing, other than waking up every second...
   matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_DOWN);
-  rtos::Thread::wait(1000);
+  rtos::ThisThread::sleep_for(1000);
   // Currenting doing nothing, other than waking up every second...
   matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_UP);
-  rtos::Thread::wait(1000);
+  rtos::ThisThread::sleep_for(1000);
   // Currenting doing nothing, other than waking up every second...
   matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_LEFT);
-  rtos::Thread::wait(1000);
+  rtos::ThisThread::sleep_for(1000);
 
   // Currenting doing nothing, other than waking up every second...
   matrix_animation_handler.set_next_animation(AniMatrix::SWIPE_RIGHT);
-  rtos::Thread::wait(1000);
+  rtos::ThisThread::sleep_for(1000);
 }

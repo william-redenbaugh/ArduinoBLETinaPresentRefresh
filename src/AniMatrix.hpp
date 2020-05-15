@@ -37,6 +37,13 @@ class MatrixAnimationHandler{
 
         void _run(void);
     private: 
+
+        // Swipe animations. 
+        void _swipe_down(void);
+        void _swipe_up(void);
+        void _swipe_left(void);
+        void _swipe_right(void);
+
         // Pointer to the matrix driver. 
         Adafruit_IS31FL3731 *matrix_ptr;
 
@@ -47,6 +54,8 @@ class MatrixAnimationHandler{
         rtos::Mutex animation_mutex;
         volatile uint16_t next_animation; 
         volatile bool animation_complete = true; 
+
+        volatile bool interrupt_animation = false; 
 };
 
 }
