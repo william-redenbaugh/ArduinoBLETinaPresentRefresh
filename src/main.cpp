@@ -19,22 +19,20 @@
 #include "PDM.h"
 #include "Arduino_APDS9960.h"
 
+// Audio manipulation files: 
+#include "Microphone.hpp"
+
 // If you're using the wing version
 Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731_Wing();
+
+// Microphone object. 
+mic::Microphone microphone; 
 
 void setup() {
   // Setup the serial interface. 
   Serial.begin(9600);
-
-  // Setting up the charlieplex led matrix
-  if(!matrix.begin()){
-    Serial.println("CharliePlex Matrix not found");
-    while(1) 
-      rtos::ThisThread::sleep_for(1000);
-  }
 }
 
 void loop() {
-  // Currenting doing nothing, other than waking up every second...
   rtos::ThisThread::sleep_for(1000);
 }
