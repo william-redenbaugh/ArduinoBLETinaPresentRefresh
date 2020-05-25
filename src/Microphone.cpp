@@ -6,5 +6,7 @@ void mic::Microphone::begin(void){
         Serial.println("Failed to start PDM :(");
         while(1)
             rtos::ThisThread::sleep_for(1000);
-  }
+    }
+
+     
 }

@@ -31,6 +31,7 @@ mic::Microphone microphone;
 void setup() {
   // Setup the serial interface. 
   Serial.begin(9600);
+  microphone.begin();
 }
 
 void loop() {
