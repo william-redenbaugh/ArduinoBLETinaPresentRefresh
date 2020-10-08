@@ -1,4 +1,4 @@
-#include "sensor_read_runtime.hpp"
+#include "mic_read_runtime.hpp"
 
 /*!
 *   @brief Handler that lets us get microphone data 
@@ -46,9 +46,6 @@ static void microphone_capture_thread(void){
         }
         // ave / 256; 
         //ave = ave / 256;  
-
-        Serial.println(ave); 
-
         rtos::ThisThread::sleep_for(20);
     }
 }

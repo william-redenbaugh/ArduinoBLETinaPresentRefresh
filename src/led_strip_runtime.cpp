@@ -1,6 +1,4 @@
 #include "led_strip_runtime.hpp"
-
-#include "sensor_read_runtime.hpp"
 #include "hsv_rgb_conv.hpp"
 
 /*!
@@ -45,16 +43,9 @@ void start_led_strip_runtime(void){
 */
 static void led_strip_thread(void){
     for(;;){
-        short *latest_mic_data = get_latest_microphone_data(); 
 
-        long ave = 0; 
-        for(int n = 0; n < 64; n++){
-            ave += latest_mic_data[n]; 
-        }
-        ave / 64; 
-        ave = ave / 256;  
 
-        HsvColor col = {ave, 255, 255}; 
+        HsvColor col = {20, 255, 255}; 
         RgbColor rgb_col = HsvToRgb(col); 
 
         for(int n = 0; n < 45; n++){
