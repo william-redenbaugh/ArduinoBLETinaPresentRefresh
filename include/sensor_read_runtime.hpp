@@ -17,4 +17,6 @@
 
 void start_sensor_read_runtime(void); 
 
+short* get_latest_microphone_data(void); 
+
 #endif 

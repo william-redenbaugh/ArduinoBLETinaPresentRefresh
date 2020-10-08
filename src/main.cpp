@@ -21,10 +21,10 @@
 void setup() {
   // Setup the serial interface. 
   Serial.begin(9600);
+  delay(3000);
 
+  start_sensor_read_runtime();
   start_led_strip_runtime(); 
-  start_sensor_read_runtime(); 
-  
 }
 
 void loop() {
