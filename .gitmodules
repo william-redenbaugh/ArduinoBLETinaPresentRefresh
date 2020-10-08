@@ -19,3 +19,9 @@
 [submodule "lib/Arduino_APDS9960"]
 	path = lib/Arduino_APDS9960
 	url = git@github.com:arduino-libraries/Arduino_APDS9960.git
+[submodule "lib/FastLED"]
+	path = lib/FastLED
+	url = git@github.com:FastLED/FastLED.git
+[submodule "lib/Adafruit_NeoPixel"]
+	path = lib/Adafruit_NeoPixel
+	url = git@github.com:adafruit/Adafruit_NeoPixel.git
