@@ -26,7 +26,7 @@ static void mic_data_capture_callback(void);
 void start_sensor_read_runtime(void){
     PDM.onReceive(mic_data_capture_callback); 
     PDM.setBufferSize(128);
-    PDM.setGain(30); 
+    PDM.setGain(235); 
     if(!PDM.begin(1, 16000)){
         Serial.println("Microphone could not initialize"); 
         for(;;)

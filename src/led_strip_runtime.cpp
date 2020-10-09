@@ -45,6 +45,7 @@ void start_led_strip_runtime(uint8_t *fft_arr_ptr){
 static void led_strip_thread(void){
     for(;;){
         for(int n = 0; n < 45; n++){
+            
             HsvColor col = {intensity_arr[n + 8], 255, 255}; 
             RgbColor rgb_col = HsvToRgb(col); 
             

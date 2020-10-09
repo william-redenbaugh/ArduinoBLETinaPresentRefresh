@@ -18,11 +18,17 @@ static Adafruit_IS31FL3731 matrix = Adafruit_IS31FL3731_Wing();
 void start_charliexplex_runtime(uint8_t *fft_arr); 
 static void charlieplex_control_thread(void);
 
+/*!
+*   @brief Sets up the charlieplex matrix runtime thread. 
+*/
 void start_charliexplex_runtime(uint8_t *fft_arr){ 
     intensity_arr = fft_arr; 
     charlieplex_thread_handler.start(charlieplex_control_thread); 
 }
 
+/*!
+*   @brief Charlieplex matrix runtime thread. 
+*/
 static void charlieplex_control_thread(void){
     // Setting up the charlieplex led matrix
     // If we can't properly initialize the charlieplex we sleep the thread
@@ -30,20 +36,22 @@ static void charlieplex_control_thread(void){
         Serial.println("CharliePlex Matrix not found");
         while(1)
             rtos::ThisThread::sleep_for(1000);
-    }  
+    }
 
     uint32_t restart_matrix = 0; 
     uint8_t frame = 0; 
     for(;;){
         matrix.setFrame(frame); 
         for(int x = 0; x < 15; x++){  
-            uint8_t intensity = intensity_arr[x * 4] / 32; 
-            for(int y = 0; y < intensity; y++){
+            uint8_t intensity = intensity_arr[x] / 27;
+            if(intensity >= 7)
+                intensity = 6; 
+                 
+            for(int y = 0; y < intensity; y++)
                 matrix.drawPixel(x, y, 255); 
-            }
-            for(int y = intensity; y < 7; y++){
+
+            for(int y = intensity; y < 7; y++)
                 matrix.drawPixel(x, y, 0); 
-            }
         }
         matrix.displayFrame(frame); 
 
