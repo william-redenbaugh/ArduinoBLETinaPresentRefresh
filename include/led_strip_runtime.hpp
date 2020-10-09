@@ -10,7 +10,8 @@
 #include "rtos.h"
 
 #include "Adafruit_NeoPixel.h"
+#include "hsv_rgb_conv.hpp"
 
-void start_led_strip_runtime(void); 
+void start_led_strip_runtime(uint8_t *fft_arr_ptr); 
 
 #endif

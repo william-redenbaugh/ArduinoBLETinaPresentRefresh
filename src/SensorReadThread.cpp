@@ -136,7 +136,7 @@ void sense_read::SensorReadThread::read_prox_color(void){
 */
 /**************************************************************************/
 void sense_read::SensorReadThread::read_temp_humd(void){
-    this->temp_hum_data.tempurature = HTS.readTemperature();
+    this->temp_hum_data.tempurature = HTS.readTemperature(FAHRENHEIT);
     this->temp_hum_data.humidity = HTS.readHumidity();
 }
 

@@ -13,6 +13,6 @@
 #include "ble/BLE.h"
 #include "ble/GattServer.h"
 
-void start_bluetooth_runtime(void);
+void start_bluetooth_runtime();
 
 #endif

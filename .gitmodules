@@ -25,3 +25,6 @@
 [submodule "lib/Adafruit_NeoPixel"]
 	path = lib/Adafruit_NeoPixel
 	url = git@github.com:adafruit/Adafruit_NeoPixel.git
+[submodule "lib/arduinoFFT"]
+	path = lib/arduinoFFT
+	url = git@github.com:kosme/arduinoFFT.git

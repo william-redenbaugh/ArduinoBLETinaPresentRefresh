@@ -21,6 +21,8 @@
 // All the stuff required to control our bluetooth communication
 #include "bluetooth_runtime.hpp"
 
+#include "arduinoFFT.h"
+
 using namespace sense_read; 
 
 /*!
@@ -28,28 +30,54 @@ using namespace sense_read;
 */
 SensorReadThread sensors; 
 
+arduinoFFT FFT = arduinoFFT();
+#define SAMPLES 64            //Must be a power of 2
+double vReal[SAMPLES];
+double vImag[SAMPLES];
+volatile int decrement_counter = 0;
+static uint8_t intensity_arr[SAMPLES]; 
 
 void setup() {
   // Setup the serial interface. 
   Serial.begin(9600);
   delay(3000);
 
-  sensors.begin(); 
-
-  //start_sensor_read_runtime();
-  start_led_strip_runtime(); 
+  start_sensor_read_runtime();
+  start_led_strip_runtime(intensity_arr); 
+  start_charliexplex_runtime(intensity_arr);
 }
 
 void loop() {
-  rtos::ThisThread::sleep_for(10); 
-  sensors.acquire(); 
-  AccelData dat = sensors.get_accel_data(); 
-  sensors.release(); 
+  short *arr = get_latest_microphone_data(); 
+  // ++ Sampling
+  for(int i=0; i<SAMPLES; i++){
+      vReal[i]= arr[i]/2;                      // Copy to bins after compressing
+      vImag[i] = 0;                         
+  }
 
-  Serial.print(dat.x); 
-  Serial.print(" "); 
-  Serial.print(dat.y); 
-  Serial.print(" "); 
-  Serial.println(dat.z); 
+  FFT.Windowing(vReal, SAMPLES, FFT_WIN_TYP_HAMMING, FFT_FORWARD);
+  FFT.Compute(vReal, vImag, SAMPLES, FFT_FORWARD);
+  FFT.ComplexToMagnitude(vReal, vImag, SAMPLES);
 
+  // Find peaks
+  for(int n = 0; n < 64; n++){
+      int h = abs(vReal[n + 8]); 
+      if(h > 255)
+          h = 255; 
+      if(intensity_arr[n] < h)
+          intensity_arr[n] = h; 
+  }
+
+  decrement_counter++; 
+  if(decrement_counter == 1){
+    for(int n = 0; n < 64; n++){
+      if(intensity_arr[n] >= 20)
+          intensity_arr[n] -= 20; 
+      else
+        intensity_arr[n] = 0; 
+    }
+    decrement_counter = 0; 
+  }
+
+  rtos::ThisThread::sleep_for(15); 
 }

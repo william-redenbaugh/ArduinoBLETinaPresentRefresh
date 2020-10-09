@@ -12,6 +12,6 @@
 // Driver libraries for controlling our charlieplex matrix display
 #include "Adafruit_IS31FL3731.h"
 
-void start_charliexplex_runtime(void); 
+void start_charliexplex_runtime(uint8_t *fft_arr); 
 
 #endif
