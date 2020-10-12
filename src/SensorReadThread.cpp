@@ -45,6 +45,11 @@ void sense_read::SensorReadThread::init_sensors(void){
         while(1)
             rtos::ThisThread::sleep_for(1000);
     }
+
+    if(APDS.begin()){
+        Serial.println("Failed to initiliaze our color sensor"); 
+    }
+
 }
 
 /**************************************************************************/
@@ -56,6 +61,7 @@ void sense_read::SensorReadThread::deinit_sensors(void){
     BARO.end();
     IMU.end(); 
     HTS.end();
+    APDS.end(); 
 }
 
 /**************************************************************************/
@@ -88,6 +94,7 @@ void sense_read::SensorReadThread::_internal_thread_func(void){
     this->read_pressure_sensor();
     this->read_imu();
     this->read_temp_humd();
+    this->read_prox_color(); 
     this->resource_mutx.unlock(); 
     
     rtos::ThisThread::sleep_for(this->delay_ms);
