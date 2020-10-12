@@ -1,0 +1,47 @@
+syntax = "proto3"; 
+
+message MagData{
+    float x = 1; 
+    float y = 2; 
+    float z = 3; 
+}; 
+
+message AccelData{
+    float x = 1; 
+    float y = 2; 
+    float z = 3; 
+}; 
+
+message GyroData{
+    float x = 1; 
+    float y = 2; 
+    float z = 3; 
+}; 
+
+message ColorData{
+    int32 r = 1; 
+    int32 g = 2; 
+    int32 b = 3; 
+}; 
+
+message GestureProxData{
+    int32 gesture   = 1; 
+    int32 proximity = 2; 
+};
+
+message TempHumData{
+    float tempurature = 1; 
+    float humidity = 2; 
+}; 
+
+/*
+*   Overarching message that contains everything needed to send over serial to master controller
+*/
+message SensorMessage{
+    MagData mag_dat = 1; 
+    AccelData accel_dat = 2;     
+    GyroData gyro_dat = 3; 
+    ColorData color_dat = 4; 
+    GestureProxData gest_prox_dat = 5; 
+    TempHumData temp_hum_dat = 6; 
+}; 

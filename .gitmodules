@@ -28,3 +28,6 @@
 [submodule "lib/arduinoFFT"]
 	path = lib/arduinoFFT
 	url = git@github.com:kosme/arduinoFFT.git
+[submodule "lib/nanopb"]
+	path = lib/nanopb
+	url = git@github.com:william-redenbaugh/nanopb.git

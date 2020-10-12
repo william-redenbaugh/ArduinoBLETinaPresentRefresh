@@ -12,7 +12,11 @@
 // All the stuff required to control our sensor reading stuff
 #include "SensorReadThread.hpp"
 
-using namespace sense_read;
+
+#include "pb.h"
+#include "pb_common.h"
+#include "pb_encode.h"
+#include "pb_decode.h"
 
 /*!
 * @brief Copy of mic data. 
@@ -40,5 +44,8 @@ void setup() {
 }
 
 void loop() {
+  sensors.acquire(); 
+  sensors.get_accel_data(); 
+
   rtos::ThisThread::sleep_for(15); 
 }

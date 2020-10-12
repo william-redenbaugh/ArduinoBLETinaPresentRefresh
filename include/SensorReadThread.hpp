@@ -16,7 +16,8 @@
 #include "Arduino_APDS9960.h"
 #include "PDM.h"
 
-namespace sense_read{
+#include "SensorMessagePack.pb.h"
+
 
 /**************************************************************************/
 /*!
@@ -29,30 +30,6 @@ enum SensorEnableBitmask{
     ENAB_IMU = 0b00000100,
     ENAB_HTEMP = 0b00001000, 
     ENAB_PROX = 0b00010000
-};
-
-struct AccelData{
-    float x, y, z; 
-};
-
-struct GyroData{
-   float x, y, z;  
-};
-
-struct MagData{
-    float x, y, z;
-};
-
-struct ColorData{
-    int r, g, b;
-};
-
-struct GestureProxData{
-    int gesture, proximity; 
-};
-
-struct TempHumData{
-    float tempurature, humidity;
 };
 
 /**************************************************************************/
@@ -98,7 +75,7 @@ class SensorReadThread{
         rtos::Thread thread_handler; 
 
         // Period in which we delay our program.
-        uint16_t delay_ms = 100;
+        uint16_t delay_ms = 50;
         
         // pressure data from our barometric pressure sensor. 
         float barometric_pressure = 0.0;
@@ -120,6 +97,5 @@ class SensorReadThread{
         rtos::Mutex resource_mutx;
 };
 
-}
 
 #endif
